@@ -1,0 +1,17 @@
+runtime: python37
+env: standard
+
+manual_scaling:
+  instances: 1
+  
+instance_class: B8
+                             
+entrypoint: gunicorn -b :$PORT main:server 
+
+# handlers:
+#  - url: ./assets
+#  static_dir: assets
+  
+# https://cloud.google.com/appengine/docs/standard/python/config/appref
+env_variables:
+  PKL_BUCKET:  'susano-dash.appspot.com' 
