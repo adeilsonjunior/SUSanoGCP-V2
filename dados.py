@@ -268,6 +268,7 @@ class dados_sessão:
         
         
         self.df_EMA_f_A = dg.df_EMA[dg.df_EMA['Cod_Alvo'] == Cod_Alvo_em_foco]
+        print(f'***** {self.df_EMA_f_A.columns=}')
         # df_EMA_f_A contém os valores anuais por (Estabelecimento, Município), relativos ao alvo em foco
         
         self.n_municípios_com_produção_no_alvo = len(self.df_EMA_f_A['IBGE_Estab'].unique())
@@ -277,6 +278,7 @@ class dados_sessão:
         self.df_EMA_f_AE = self.df_EMA_f_A[self.df_EMA_f_A['CNES'] == CNES_em_foco]
         # df_EMA_f_AE contém os valores anuais por (Município), relativos ao alvo em foco 
         # e ao estabelecimento em foco
+        print(f'***** {self.df_EMA_f_AE.columns=}')
         
         self.qtd_total_AE = self.df_EMA_f_AE['Qtd_EMA'].sum()
         self.n_municípios_atendidos_AE = len(self.df_EMA_f_AE['IBGE_Res'].unique())
@@ -285,12 +287,14 @@ class dados_sessão:
         self.df_EMA_f_A_g_M = self.df_EMA_f_A.groupby(['IBGE_Res']).sum()
         # df_EMA_f_A_g_M contém os valores anuais por (Município) relativos ao alvo em foco
         # somente para municípios com pelo menos um registro em df_EMA
+        print(f'***** {self.df_EMA_f_A_g_M.columns=}')
         
         self.df_M_Alvo_em_foco = dg.df_M.merge(self.df_EMA_f_A_g_M, 
                                                on='IBGE_Res', 
                                                how='left').fillna(0)
-        self.df_M_Alvo_em_foco.rename(columns={'UF_Res_x': 'UF_Res'})
-        print(f'****** df_M_Alvo_em_foco.columns = {self.df_M_Alvo_em_foco.columns}')
+        print(f'****** ANTES DO RENAME {self.df_M_Alvo_em_foco.columns=}')
+        self.df_M_Alvo_em_foco.rename(columns={'UF_Res_x': 'UF_Res'}, inplace=True)
+        print(f'****** APÓS O RENAME {self.df_M_Alvo_em_foco.columns=}')
         # df_M_Alvo_em_foco contém os valores anuais por (Município) relativos ao alvo em foco
         # para *todos* os municípios do Brasil
         
